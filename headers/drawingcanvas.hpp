@@ -1,9 +1,10 @@
 #pragma once
+#include "pch.hpp"
 
 #include <wx/wx.h>
-#include <list>
 
-#include "graphicobject.h"
+// #include "Model/Shapes/IShape.hpp"
+#include "graphicobject.hpp"
 
 wxDECLARE_EVENT(CANVAS_RECT_ADDED, wxCommandEvent);
 wxDECLARE_EVENT(CANVAS_RECT_REMOVED, wxCommandEvent);
@@ -14,7 +15,7 @@ public:
     DrawingCanvas(wxWindow *parent, wxWindowID id, const wxPoint &pos, const wxSize &size);
     virtual ~DrawingCanvas() {}
 
-    void addRect(int width, int height, int centerX, int centerY, double angle, wxColor color, const std::string &text);
+    void addRect(double width, double height, double centerX, double centerY, double angle, wxColor color, const std::string &text);
     void removeTopRect();
 
     int getObjectCount() { return objectList.size(); }

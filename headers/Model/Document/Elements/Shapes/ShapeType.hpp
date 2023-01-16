@@ -1,0 +1,13 @@
+#ifndef SHAPES_COMMON_SHAPE_TYPE_HPP
+#define SHAPES_COMMON_SHAPE_TYPE_HPP
+
+enum class ShapeType
+{
+	UNKNOWN = 0,
+	ELLIPSE,
+	TRIANGLE,
+	RECTANGLE,
+	REGULAR_POLYGON,
+};
+
+#endif

@@ -1,7 +1,9 @@
-#include "drawingcanvas.h"
+#include "pch.hpp"
+
 #include <wx/graphics.h>
 #include <wx/dcbuffer.h>
-#include <iostream>
+
+#include "drawingcanvas.hpp"
 
 wxDEFINE_EVENT(CANVAS_RECT_ADDED, wxCommandEvent);
 wxDEFINE_EVENT(CANVAS_RECT_REMOVED, wxCommandEvent);
@@ -16,6 +18,7 @@ DrawingCanvas::DrawingCanvas(wxWindow *parent, wxWindowID id, const wxPoint &pos
     this->Bind(wxEVT_LEFT_UP, &DrawingCanvas::OnMouseUp, this);
     this->Bind(wxEVT_LEAVE_WINDOW, &DrawingCanvas::OnMouseLeave, this);
 
+    // DELETE
     addRect(this->FromDIP(100), this->FromDIP(80), this->FromDIP(210), this->FromDIP(140), 0, *wxRED, "Rect #1");
     addRect(this->FromDIP(130), this->FromDIP(110), this->FromDIP(280), this->FromDIP(210), M_PI / 3.0, *wxBLUE, "Rect #2");
     addRect(this->FromDIP(110), this->FromDIP(110), this->FromDIP(300), this->FromDIP(120), -M_PI / 4.0, wxColor(255, 0, 255, 128), "Rect #3");
@@ -24,20 +27,20 @@ DrawingCanvas::DrawingCanvas(wxWindow *parent, wxWindowID id, const wxPoint &pos
     this->shouldRotate = false;
 }
 
-void DrawingCanvas::addRect(int width, int height, int centerX, int centerY, double angle, wxColor color, const std::string &text)
+void DrawingCanvas::addRect(double width, double height, double topLeftX, double topLeftY, double angle, wxColor color, const std::string &text)
 {
     GraphicObject obj{
-        {-width / 2.0,
-         -height / 2.0,
-         static_cast<double>(width),
-         static_cast<double>(height)},
+        {0,
+         0,
+         width,
+         height},
         color,
         text,
         {}};
 
     obj.transform.Translate(
-        static_cast<double>(centerX),
-        static_cast<double>(centerY));
+        topLeftX,
+        topLeftY);
 
     obj.transform.Rotate(angle);
 
@@ -96,8 +99,7 @@ void DrawingCanvas::OnMouseDown(wxMouseEvent &event)
                                               auto inv = o.transform;
                                               inv.Invert();
                                               clickPos = inv.TransformPoint(clickPos);
-                                              return o.rect.Contains(clickPos);
-                                          });
+                                              return o.rect.Contains(clickPos); });
 
     if (clickedObjectIter != objectList.rend())
     {

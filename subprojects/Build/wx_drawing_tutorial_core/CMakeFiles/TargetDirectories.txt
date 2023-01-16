@@ -1,0 +1,3 @@
+/home/kelrogg/Projects/wx_drawing_tutorial/subprojects/Build/wx_drawing_tutorial_core/CMakeFiles/main.dir
+/home/kelrogg/Projects/wx_drawing_tutorial/subprojects/Build/wx_drawing_tutorial_core/CMakeFiles/edit_cache.dir
+/home/kelrogg/Projects/wx_drawing_tutorial/subprojects/Build/wx_drawing_tutorial_core/CMakeFiles/rebuild_cache.dir
