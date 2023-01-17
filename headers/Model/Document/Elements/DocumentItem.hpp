@@ -3,12 +3,15 @@
 
 #include "IImage.hpp"
 #include "IParagraph.hpp"
+#include "Shapes/IShape.hpp"
 
 class DocumentItem
 {
 public:
-	DocumentItem(const IElementSharedPtr& ptr);
+	DocumentItem(const IElementSharedPtr &ptr);
 
+	IShapeSharedPtr GetShape();
+	IShapeSharedPtrConst GetShape() const;
 	IImageSharedPtr GetImage();
 	IImageSharedPtrConst GetImage() const;
 	IParagraphSharedPtr GetParagraph();

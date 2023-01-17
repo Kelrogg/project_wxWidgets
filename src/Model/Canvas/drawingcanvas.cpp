@@ -3,7 +3,7 @@
 #include <wx/graphics.h>
 #include <wx/dcbuffer.h>
 
-#include "drawingcanvas.hpp"
+#include "Model/Canvas/drawingcanvas.hpp"
 
 wxDEFINE_EVENT(CANVAS_RECT_ADDED, wxCommandEvent);
 wxDEFINE_EVENT(CANVAS_RECT_REMOVED, wxCommandEvent);
@@ -30,10 +30,7 @@ DrawingCanvas::DrawingCanvas(wxWindow *parent, wxWindowID id, const wxPoint &pos
 void DrawingCanvas::addRect(double width, double height, double topLeftX, double topLeftY, double angle, wxColor color, const std::string &text)
 {
     GraphicObject obj{
-        {0,
-         0,
-         width,
-         height},
+        {0, 0, width, height},
         color,
         text,
         {}};
@@ -79,12 +76,11 @@ void DrawingCanvas::OnPaint(wxPaintEvent &evt)
             gc->SetBrush(wxBrush(object.color));
             gc->DrawRectangle(object.rect.m_x, object.rect.m_y, object.rect.m_width, object.rect.m_height);
 
-            gc->SetFont(*wxNORMAL_FONT, *wxWHITE);
+            // gc->SetFont(*wxNORMAL_FONT, *wxWHITE);
+            // double textWidth, textHeight;
+            // gc->GetTextExtent(object.text, &textWidth, &textHeight);
 
-            double textWidth, textHeight;
-            gc->GetTextExtent(object.text, &textWidth, &textHeight);
-
-            gc->DrawText(object.text, object.rect.m_x + object.rect.m_width / 2.0 - textWidth / 2.0, object.rect.m_y + object.rect.m_height / 2.0 - textHeight / 2.0);
+            // gc->DrawText(object.text, object.rect.m_x + object.rect.m_width / 2.0 - textWidth / 2.0, object.rect.m_y + object.rect.m_height / 2.0 - textHeight / 2.0);
         }
 
         delete gc;
@@ -114,6 +110,10 @@ void DrawingCanvas::OnMouseDown(wxMouseEvent &event)
         shouldRotate = wxGetKeyState(WXK_ALT);
 
         Refresh(); // for z order reversal
+    }
+    else
+    {
+        return; // TODO Unselect
     }
 }
 

@@ -1,7 +1,7 @@
 #ifndef COMMAND_EDITOR_EDITOR_HPP
 #define COMMAND_EDITOR_EDITOR_HPP
 
-#include "Document/HTMLDocument.hpp"
+#include "Document/Model.hpp"
 
 class Editor
 {

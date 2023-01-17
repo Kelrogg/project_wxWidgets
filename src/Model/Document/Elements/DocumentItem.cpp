@@ -7,6 +7,26 @@ DocumentItem::DocumentItem(const IElementSharedPtr &ptr)
 {
 }
 
+IShapeSharedPtr DocumentItem::GetShape()
+{
+	auto ptr = std::dynamic_pointer_cast<IShape>(m_element);
+	if (ptr)
+	{
+		return ptr;
+	}
+	return nullptr;
+}
+
+IShapeSharedPtrConst DocumentItem::GetShape() const
+{
+	auto ptr = std::dynamic_pointer_cast<IShape>(m_element);
+	if (ptr)
+	{
+		return ptr;
+	}
+	return nullptr;
+}
+
 IImageSharedPtr DocumentItem::GetImage()
 {
 	auto ptr = std::dynamic_pointer_cast<IImage>(m_element);

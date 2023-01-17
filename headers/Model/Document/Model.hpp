@@ -1,5 +1,5 @@
-#ifndef COMMAND_DOCUMENT_HTML_DOCUMENT_HPP
-#define COMMAND_DOCUMENT_HTML_DOCUMENT_HPP
+#ifndef COMMAND_DOCUMENT_MODEL_HPP
+#define COMMAND_DOCUMENT_MODEL_HPP
 
 #include "../Commands/UndoManager.hpp"
 #include "Elements/DocumentItem.hpp"
@@ -7,15 +7,15 @@
 #include "Elements/IParagraph.hpp"
 #include "IDocument.hpp"
 
-class HTMLDocument : public IDocument
+class Model : public IDocument
 {
 public:
 	using Container = std::deque<DocumentItem>;
 
-	HTMLDocument() = default;
+	Model() = default;
 
 	template <typename StringT = std::string>
-	HTMLDocument(StringT &&string)
+	Model(StringT &&string)
 		: m_title(std::forward<StringT>(string)), m_items(), m_undoManager()
 	{
 	}

@@ -1,6 +1,7 @@
 #ifndef SHAPES_ISHAPE_HPP
 #define SHAPES_ISHAPE_HPP
 
+#include "IShape_fwd.hpp"
 #include "../IElement.hpp"
 #include "../../../Canvas/ICanvas.hpp"
 

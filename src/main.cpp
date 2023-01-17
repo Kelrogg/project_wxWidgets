@@ -3,20 +3,24 @@
 #include <wx/wx.h>
 #include <wx/listbook.h>
 
-#include "drawingcanvas.hpp"
+#include "Model/Canvas/drawingcanvas.hpp"
 
 class MyApp : public wxApp
 {
 public:
     virtual bool OnInit();
 };
+wxIMPLEMENT_APP(MyApp);
+
 class MyFrame : public wxFrame
 {
 public:
     MyFrame(const wxString &title, const wxPoint &pos, const wxSize &size);
 
 private:
-    void OnAddButtonClick(wxCommandEvent &event);
+    void OnAddRectangleButtonClick(wxCommandEvent &event);
+    void OnAddTriangleButtonClick(wxCommandEvent &event);
+    void OnAddEllipseButtonClick(wxCommandEvent &event);
     void OnRemoveButtonClick(wxCommandEvent &event);
 
     void OnRectAdded(wxCommandEvent &event);
@@ -26,12 +30,9 @@ private:
 
     DrawingCanvas *canvas;
 
-    int rectCount = 0;
     std::mt19937 randomGen;
     // model, controller
 };
-
-wxIMPLEMENT_APP(MyApp);
 
 bool MyApp::OnInit()
 {
@@ -52,8 +53,6 @@ MyFrame::MyFrame(const wxString &title, const wxPoint &pos, const wxSize &size)
     canvas->Bind(CANVAS_RECT_ADDED, &MyFrame::OnRectAdded, this);
     canvas->Bind(CANVAS_RECT_REMOVED, &MyFrame::OnRectRemoved, this);
 
-    rectCount = canvas->getObjectCount();
-
     sizer->Add(buttonPanel, 0, wxEXPAND | wxALL, 0);
     sizer->Add(canvas, 1, wxEXPAND | wxALL, 0);
 
@@ -63,7 +62,7 @@ MyFrame::MyFrame(const wxString &title, const wxPoint &pos, const wxSize &size)
     SetStatusText("Ready", 0);
 }
 
-void MyFrame::OnAddButtonClick(wxCommandEvent &event)
+void MyFrame::OnAddRectangleButtonClick(wxCommandEvent &event)
 {
     std::uniform_int_distribution sizeDistrib(this->FromDIP(50), this->FromDIP(100));
     std::uniform_int_distribution xDistrib(0, canvas->GetSize().GetWidth());
@@ -72,9 +71,34 @@ void MyFrame::OnAddButtonClick(wxCommandEvent &event)
 
     std::uniform_int_distribution colorDistrib(0, 0xFFFFFF);
 
-    ++rectCount;
     canvas->addRect(sizeDistrib(randomGen), sizeDistrib(randomGen), xDistrib(randomGen), yDistrib(randomGen),
-                    angleDistrib(randomGen), wxColour(colorDistrib(randomGen)), "Rect #" + std::to_string(rectCount));
+                    angleDistrib(randomGen), wxColour(colorDistrib(randomGen)), "");
+}
+
+void MyFrame::OnAddTriangleButtonClick(wxCommandEvent &event)
+{
+    std::uniform_int_distribution sizeDistrib(this->FromDIP(50), this->FromDIP(100));
+    std::uniform_int_distribution xDistrib(0, canvas->GetSize().GetWidth());
+    std::uniform_int_distribution yDistrib(0, canvas->GetSize().GetHeight());
+    std::uniform_real_distribution angleDistrib(0.0, M_PI * 2.0);
+
+    std::uniform_int_distribution colorDistrib(0, 0xFFFFFF);
+
+    canvas->addRect(sizeDistrib(randomGen), sizeDistrib(randomGen), xDistrib(randomGen), yDistrib(randomGen),
+                    angleDistrib(randomGen), wxColour(colorDistrib(randomGen)), "");
+}
+
+void MyFrame::OnAddEllipseButtonClick(wxCommandEvent &event)
+{
+    std::uniform_int_distribution sizeDistrib(this->FromDIP(50), this->FromDIP(100));
+    std::uniform_int_distribution xDistrib(0, canvas->GetSize().GetWidth());
+    std::uniform_int_distribution yDistrib(0, canvas->GetSize().GetHeight());
+    std::uniform_real_distribution angleDistrib(0.0, M_PI * 2.0);
+
+    std::uniform_int_distribution colorDistrib(0, 0xFFFFFF);
+
+    canvas->addRect(sizeDistrib(randomGen), sizeDistrib(randomGen), xDistrib(randomGen), yDistrib(randomGen),
+                    angleDistrib(randomGen), wxColour(colorDistrib(randomGen)), "");
 }
 
 void MyFrame::OnRemoveButtonClick(wxCommandEvent &event)
@@ -96,15 +120,19 @@ wxPanel *MyFrame::createButtonPanel(wxWindow *parent)
 {
     wxPanel *panel = new wxPanel(parent);
     wxButton *addRectButton = new wxButton(panel, wxID_ANY, "Add Rect");
+    wxButton *addEllipseButton = new wxButton(panel, wxID_ANY, "Add Ellipse");
+    wxButton *addTriangleButton = new wxButton(panel, wxID_ANY, "Add Triangle");
     wxButton *removeLastButton = new wxButton(panel, wxID_ANY, "Remove Top");
 
     wxSizer *sizer = new wxBoxSizer(wxHORIZONTAL);
     sizer->Add(addRectButton, 0, wxEXPAND | wxALL, 3);
+    sizer->Add(addEllipseButton, 0, wxEXPAND | wxALL, 3);
+    sizer->Add(addTriangleButton, 0, wxEXPAND | wxALL, 3);
     sizer->Add(removeLastButton, 0, wxEXPAND | wxALL, 3);
 
     panel->SetSizer(sizer);
 
-    addRectButton->Bind(wxEVT_BUTTON, &MyFrame::OnAddButtonClick, this);
+    addRectButton->Bind(wxEVT_BUTTON, &MyFrame::OnAddRectangleButtonClick, this);
     removeLastButton->Bind(wxEVT_BUTTON, &MyFrame::OnRemoveButtonClick, this);
 
     return panel;
