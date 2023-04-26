@@ -1,10 +1,17 @@
-#pragma once
-#include "pch.hpp"
+#ifndef CANVAS_WX_CANVAS_HPP
+#define CANVAS_WX_CANVAS_HPP
 
-#include <wx/wx.h>
+// #include "/usr/local/lib/wx/include/gtk3-unicode-3.3/wx/setup.h"
+#include "wx/wxprec.h"
 
-// #include "Model/Shapes/IShape.hpp"
-#include "Model/Document/Elements/IElement.hpp"
+#ifndef WX_PRECOMP
+#include "wx/wx.h"
+#endif
+
+#include "wx/dcsvg.h"
+#include "wx/notebook.h"
+
+#include "Model/Canvas/ICanvas.hpp"
 #include "graphicobject.hpp"
 
 wxDECLARE_EVENT(CANVAS_RECT_ADDED, wxCommandEvent);
@@ -14,15 +21,17 @@ wxDECLARE_EVENT(CANVAS_ELLIPSE_REMOVED, wxCommandEvent);
 wxDECLARE_EVENT(CANVAS_TRIANGLE_ADDED, wxCommandEvent);
 wxDECLARE_EVENT(CANVAS_TRIANGLE_REMOVED, wxCommandEvent);
 
-class DrawingCanvas : public wxWindow
+class WXCanvas : public wxWindow, public ICanvas
 {
 public:
-    DrawingCanvas(wxWindow *parent, wxWindowID id, const wxPoint &pos, const wxSize &size);
-    virtual ~DrawingCanvas() {}
+    WXCanvas(wxWindow *parent, wxWindowID id, const wxPoint &pos, const wxSize &size);
+    // virtual ~WXCanvas() {}
 
-    void AddRect(double width, double height, double centerX, double centerY, double angle, wxColor color);
-    void AddEllipse(double verticalR, double horizontalR, double centerX, double centerY, double angle, wxColor color);
-    void AddTriangle(double verticalR, double horizontalR, double centerX, double centerY, double angle, wxColor color);
+    // void DrawLine(double fromX, double fromY, double toX, double toY) final;
+    void DrawRectangle(double centerX, double centerY, double width, double height, double angle) final;
+    // void DrawEllipse(double centerX, double centerY, double verticalR, double horizontalR, double angle) final;
+    // void DrawRegularPolygon(const std::vector<Point> &points) final;
+    //  void SetColor(Color color) final;
     void RemoveSelected();
 
     int GetObjectCount() { return objectList.size(); }
@@ -49,3 +58,5 @@ private:
 
     wxPoint2DDouble lastDragOrigin;
 };
+
+#endif

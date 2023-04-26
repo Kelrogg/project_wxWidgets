@@ -14,7 +14,12 @@ set(wxWidgets_USE_STATIC 1)
 
 find_package(wxWidgets REQUIRED)
 
-file(GLOB_RECURSE all_srcs *.cpp)
+file(GLOB_RECURSE all_srcs 
+                Controller/*.cpp
+                Model/*cpp
+                View/*cpp
+                pch.cpp
+                main.cpp)
 #file(GLOB RECURSE all_headers ../headers/*.hpp)
 #set(SRCS main.cpp drawingcanvas.cpp pch.cpp)
 
@@ -30,8 +35,8 @@ endif()
 target_link_libraries(main PRIVATE ${wxWidgets_LIBRARIES})
 
 target_include_directories(main PUBLIC ../headers)
-target_include_directories(main PUBLIC ../headers/Model)
-target_include_directories(main PUBLIC ../headers/View)
-target_include_directories(main PUBLIC ../headers/Controller)
+#target_include_directories(main PUBLIC ../headers/Model)
+#target_include_directories(main PUBLIC ../headers/View)
+#target_include_directories(main PUBLIC ../headers/Controller)
 
-target_precompile_headers(main PRIVATE ../headers/pch.hpp)
+target_precompile_headers(main PUBLIC ../headers/pch.hpp)

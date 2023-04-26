@@ -1,12 +1,12 @@
-#ifndef SHAPES_UTIL_REGULAR_POLYGON_VERTEXES_CREATOR_HPP_
-#define SHAPES_UTIL_REGULAR_POLYGON_VERTEXES_CREATOR_HPP_
+#ifndef SHAPES_UTIL_REGULAR_POLYGON_VERTEXES_CREATOR_HPP
+#define SHAPES_UTIL_REGULAR_POLYGON_VERTEXES_CREATOR_HPP
 
 #define _USE_MATH_DEFINES
 #include <math.h>
 
 #include "../Point.hpp"
 
-inline std::vector<Point> CreateRegularPolygonVertexes(const Point& center, double radius, size_t vertexCount)
+inline std::vector<Point> CreateRegularPolygonVertexes(const Point &center, double radius, size_t vertexCount)
 {
 	if (vertexCount < 3)
 	{
@@ -22,7 +22,7 @@ inline std::vector<Point> CreateRegularPolygonVertexes(const Point& center, doub
 	{
 		res.emplace_back(Point{
 			static_cast<int>(std::round(radius * std::cos(angle))) + center.x,
-			static_cast<int>(std::round(radius * std::sin(angle))) + center.y });
+			static_cast<int>(std::round(radius * std::sin(angle))) + center.y});
 		angle += addAngle;
 	}
 

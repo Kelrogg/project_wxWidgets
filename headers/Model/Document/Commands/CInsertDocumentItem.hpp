@@ -1,19 +1,15 @@
 #ifndef COMMAND_DOCUMENT_COMMANDS_INSERT_DOCUMENT_ITEM_HPP
 #define COMMAND_DOCUMENT_COMMANDS_INSERT_DOCUMENT_ITEM_HPP
-
+/*
 #include "../../Commands/AbstractUndoableEdit.hpp"
 #include "../Elements/DocumentItem.hpp"
-#include "common.hpp"
 
 template <typename DocumentInnerContainerT>
 class CInsertDocumentItem : public AbstractUndoableEdit
 {
 public:
-	CInsertDocumentItem(DocumentInnerContainerT& target, const DocumentItem& docItem, size_t index)
-		: AbstractUndoableEdit(document_commands::INSERT_DOCUMENT_ITEM_COMMAND_NAME)
-		, m_target(target)
-		, m_index(index)
-		, m_state(docItem)
+	CInsertDocumentItem(DocumentInnerContainerT &target, const DocumentItem &docItem, size_t index)
+		: AbstractUndoableEdit(document_commands::INSERT_DOCUMENT_ITEM_COMMAND_NAME), m_target(target), m_index(index), m_state(docItem)
 	{
 	}
 
@@ -48,10 +44,11 @@ private:
 		return DerivedExecute();
 	}
 
-	DocumentInnerContainerT& m_target;
+	DocumentInnerContainerT &m_target;
 
 	size_t m_index;
 	DocumentItem m_state;
 };
 
+ */
 #endif

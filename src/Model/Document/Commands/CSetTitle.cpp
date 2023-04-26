@@ -1,6 +1,6 @@
 #include "pch.hpp"
 
-#include "Document/Commands/CSetTitle.hpp"
+#include "Model/Document/Commands/CSetTitle.hpp"
 
 bool CSetTitle::DerivedExecute()
 {

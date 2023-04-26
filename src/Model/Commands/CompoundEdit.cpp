@@ -1,8 +1,8 @@
 #include "pch.hpp"
 
-#include "Commands/CompoundEdit.hpp"
+#include "Model/Commands/CompoundEdit.hpp"
 
-bool CompoundEdit::AddEdit(const IUndoableEditSharedPtr& edit)
+bool CompoundEdit::AddEdit(const IUndoableEditSharedPtr &edit)
 {
 	if (!m_inCompose)
 	{
@@ -11,7 +11,7 @@ bool CompoundEdit::AddEdit(const IUndoableEditSharedPtr& edit)
 
 	if (!m_edits.empty())
 	{
-		if (auto& lastEdit = m_edits.back();
+		if (auto &lastEdit = m_edits.back();
 			!lastEdit->AddEdit(edit))
 		{
 			if (edit->ReplaceEdit(lastEdit))
@@ -39,24 +39,21 @@ bool CompoundEdit::EndCompose() noexcept
 
 bool CompoundEdit::DerivedExecute()
 {
-	std::for_each(m_edits.begin(), m_edits.end(), [](auto& edit) {
-		edit->Execute();
-	});
+	std::for_each(m_edits.begin(), m_edits.end(), [](auto &edit)
+				  { edit->Execute(); });
 	return true;
 }
 
 bool CompoundEdit::DerivedUndo()
 {
-	std::for_each(m_edits.rbegin(), m_edits.rend(), [](auto& edit) {
-		edit->Undo();
-	});
+	std::for_each(m_edits.rbegin(), m_edits.rend(), [](auto &edit)
+				  { edit->Undo(); });
 	return true;
 }
 
 bool CompoundEdit::DerivedRedo()
 {
-	std::for_each(m_edits.begin(), m_edits.end(), [](auto& edit) {
-		edit->Redo();
-	});
+	std::for_each(m_edits.begin(), m_edits.end(), [](auto &edit)
+				  { edit->Redo(); });
 	return true;
 }

@@ -1,12 +1,17 @@
 #include "pch.hpp"
-
+/*
 #include <wx/graphics.h>
 #include <wx/dcbuffer.h>
 
 #include "Model/Canvas/drawingcanvas.hpp"
+#include "Model/Document/Elements/Shapes/Ellipse.hpp"
 
 wxDEFINE_EVENT(CANVAS_RECT_ADDED, wxCommandEvent);
 wxDEFINE_EVENT(CANVAS_RECT_REMOVED, wxCommandEvent);
+wxDEFINE_EVENT(CANVAS_ELLIPSE_ADDED, wxCommandEvent);
+wxDEFINE_EVENT(CANVAS_ELLIPSE_REMOVED, wxCommandEvent);
+wxDEFINE_EVENT(CANVAS_TRIANGLE_ADDED, wxCommandEvent);
+wxDEFINE_EVENT(CANVAS_TRIANGLE_REMOVED, wxCommandEvent);
 
 DrawingCanvas::DrawingCanvas(wxWindow *parent, wxWindowID id, const wxPoint &pos, const wxSize &size) : wxWindow(parent, id, pos, size)
 {
@@ -19,20 +24,19 @@ DrawingCanvas::DrawingCanvas(wxWindow *parent, wxWindowID id, const wxPoint &pos
     this->Bind(wxEVT_LEAVE_WINDOW, &DrawingCanvas::OnMouseLeave, this);
 
     // DELETE
-    addRect(this->FromDIP(100), this->FromDIP(80), this->FromDIP(210), this->FromDIP(140), 0, *wxRED, "Rect #1");
-    addRect(this->FromDIP(130), this->FromDIP(110), this->FromDIP(280), this->FromDIP(210), M_PI / 3.0, *wxBLUE, "Rect #2");
-    addRect(this->FromDIP(110), this->FromDIP(110), this->FromDIP(300), this->FromDIP(120), -M_PI / 4.0, wxColor(255, 0, 255, 128), "Rect #3");
+    AddRect(this->FromDIP(100), this->FromDIP(80), this->FromDIP(210), this->FromDIP(140), 0, *wxRED);
+    AddRect(this->FromDIP(130), this->FromDIP(110), this->FromDIP(280), this->FromDIP(210), M_PI / 3.0, *wxBLUE);
+    AddRect(this->FromDIP(110), this->FromDIP(110), this->FromDIP(300), this->FromDIP(120), -M_PI / 4.0, wxColor(255, 0, 255, 128));
 
     this->draggedObj = nullptr;
     this->shouldRotate = false;
 }
 
-void DrawingCanvas::addRect(double width, double height, double topLeftX, double topLeftY, double angle, wxColor color, const std::string &text)
+void DrawingCanvas::AddRect(double width, double height, double topLeftX, double topLeftY, double angle, wxColor color)
 {
     GraphicObject obj{
         {0, 0, width, height},
         color,
-        text,
         {}};
 
     obj.transform.Translate(
@@ -41,27 +45,56 @@ void DrawingCanvas::addRect(double width, double height, double topLeftX, double
 
     obj.transform.Rotate(angle);
 
-    this->objectList.push_back(obj);
+    this->objectList.push_back(std::move(obj));
 
-    sendRectAddedEvent(text);
+    SendRectAddedEvent();
     Refresh();
 }
 
-void DrawingCanvas::removeTopRect()
+void DrawingCanvas::RemoveSelected()
 {
     if (!this->objectList.empty() && draggedObj == nullptr)
     {
-        auto text = this->objectList.back().text;
         this->objectList.pop_back();
 
-        sendRectRemovedEvent(text);
+        SendRectRemovedEvent();
         Refresh();
     }
 }
 
+void DrawingCanvas::AddEllipse(double verticalR, double horizontalR, double centerX, double centerY, double angle, wxColor color)
+{
+    GraphicObject obj{
+        {0, 0, verticalR, horizontalR},
+        color,
+        {}};
+
+    obj.transform.Rotate(angle);
+
+    this->objectList.push_back(std::move(obj));
+
+    SendEllipseAddedEvent();
+    Refresh();
+}
+
+void DrawingCanvas::AddTriangle(double verticalR, double horizontalR, double centerX, double centerY, double angle, wxColor color)
+{
+    GraphicObject obj{
+        {0, 0, verticalR, horizontalR},
+        color,
+        {}};
+
+    obj.transform.Rotate(angle);
+
+    this->objectList.push_back(std::move(obj));
+
+    SendEllipseAddedEvent();
+    Refresh();
+}
+
 void DrawingCanvas::OnPaint(wxPaintEvent &evt)
 {
-    // needed for windows
+    // For windows
     wxAutoBufferedPaintDC dc(this);
     dc.Clear();
 
@@ -75,12 +108,6 @@ void DrawingCanvas::OnPaint(wxPaintEvent &evt)
 
             gc->SetBrush(wxBrush(object.color));
             gc->DrawRectangle(object.rect.m_x, object.rect.m_y, object.rect.m_width, object.rect.m_height);
-
-            // gc->SetFont(*wxNORMAL_FONT, *wxWHITE);
-            // double textWidth, textHeight;
-            // gc->GetTextExtent(object.text, &textWidth, &textHeight);
-
-            // gc->DrawText(object.text, object.rect.m_x + object.rect.m_width / 2.0 - textWidth / 2.0, object.rect.m_y + object.rect.m_height / 2.0 - textHeight / 2.0);
         }
 
         delete gc;
@@ -88,14 +115,16 @@ void DrawingCanvas::OnPaint(wxPaintEvent &evt)
 }
 
 void DrawingCanvas::OnMouseDown(wxMouseEvent &event)
-{
+{ // clang-format off
     auto clickedObjectIter = std::find_if(objectList.rbegin(), objectList.rend(), [event](const GraphicObject &o)
-                                          {
-                                              wxPoint2DDouble clickPos = event.GetPosition();
-                                              auto inv = o.transform;
-                                              inv.Invert();
-                                              clickPos = inv.TransformPoint(clickPos);
-                                              return o.rect.Contains(clickPos); });
+                            {
+                                wxPoint2DDouble clickPos = event.GetPosition();
+                                auto inv = o.transform;
+                                inv.Invert();
+                                clickPos = inv.TransformPoint(clickPos);
+                                return o.rect.Contains(clickPos);
+                            });
+    // clang-format on
 
     if (clickedObjectIter != objectList.rend())
     {
@@ -144,40 +173,52 @@ void DrawingCanvas::OnMouseMove(wxMouseEvent &event)
 
 void DrawingCanvas::OnMouseUp(wxMouseEvent &event)
 {
-    finishDrag();
-    finishRotation();
+    FinishDrag();
+    FinishRotation();
 }
 
 void DrawingCanvas::OnMouseLeave(wxMouseEvent &event)
 {
-    finishDrag();
-    finishRotation();
+    FinishDrag();
+    FinishRotation();
 }
 
-void DrawingCanvas::finishDrag()
+void DrawingCanvas::FinishDrag()
 {
     draggedObj = nullptr;
 }
 
-void DrawingCanvas::finishRotation()
+void DrawingCanvas::FinishRotation()
 {
     shouldRotate = false;
 }
 
-void DrawingCanvas::sendRectAddedEvent(const wxString &rectTitle)
+void DrawingCanvas::SendRectAddedEvent()
 {
     wxCommandEvent event(CANVAS_RECT_ADDED, GetId());
     event.SetEventObject(this);
-    event.SetString(rectTitle);
 
     ProcessWindowEvent(event);
 }
 
-void DrawingCanvas::sendRectRemovedEvent(const wxString &rectTitle)
+void DrawingCanvas::SendRectRemovedEvent()
 {
     wxCommandEvent event(CANVAS_RECT_REMOVED, GetId());
     event.SetEventObject(this);
-    event.SetString(rectTitle);
 
     ProcessWindowEvent(event);
 }
+
+void DrawingCanvas::SendEllipseAddedEvent()
+{
+    wxCommandEvent event(CANVAS_ELLIPSE_ADDED, GetId());
+    event.SetEventObject(this);
+    ProcessWindowEvent(event);
+}
+
+void DrawingCanvas::SendEllipseRemovedEvent()
+{
+    wxCommandEvent event(CANVAS_ELLIPSE_REMOVED, GetId());
+    event.SetEventObject(this);
+    ProcessWindowEvent(event);
+} */

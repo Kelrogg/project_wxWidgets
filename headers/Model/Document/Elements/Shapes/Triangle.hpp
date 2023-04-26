@@ -1,7 +1,9 @@
-#ifndef SHAPES_CONCRETE_SHAPES_TRIANGLE_H_
-#define SHAPES_CONCRETE_SHAPES_TRIANGLE_H_
+#ifndef SHAPES_CONCRETE_SHAPES_TRIANGLE_HPP
+#define SHAPES_CONCRETE_SHAPES_TRIANGLE_HPP
 
 #include "Shape.hpp"
+
+// clang-format off
 
 class Triangle : public Shape
 {
@@ -38,5 +40,7 @@ public:
 private:
 	Point m_vertex2, m_vertex3;
 };
+
+// clang-format on
 
 #endif

@@ -1,15 +1,14 @@
 #include "pch.hpp"
 
-#include "Document/Elements/Image.hpp"
-#include "Document/common.hpp"
+#include "Model/Document/Elements/Images/Image.hpp"
+#include "Model/Document/common.hpp"
 
 constexpr auto TEMP_FILE_NAME_SIZE = 10;
 
 constexpr std::array<std::string_view, 3> HTML_IMAGES_EXTENSIONS{
 	".jpg",
 	".gif",
-	".png"
-};
+	".png"};
 
 const std::string MIN_DIMENSION_SIZE_STR = std::to_string(MIN_DIMENSION_SIZE);
 const std::string MAX_DIMENSION_SIZE_STR = std::to_string(MAX_DIMENSION_SIZE);
@@ -17,7 +16,7 @@ const std::string MAX_DIMENSION_SIZE_STR = std::to_string(MAX_DIMENSION_SIZE);
 const std::string WIDTH_OUT_OF_RANGE_DIMENSION_ERR_MSG = "Given width is out of ranges. Min-Max: " + MIN_DIMENSION_SIZE_STR + "-" + MAX_DIMENSION_SIZE_STR;
 const std::string HEIGHT_OUT_OF_RANGE_DIMENSION_ERR_MSG = "Given height is out of ranges. Min-Max: " + MIN_DIMENSION_SIZE_STR + "-" + MAX_DIMENSION_SIZE_STR;
 
-void TryCheckIsImage(const StdPath& path)
+void TryCheckIsImage(const StdPath &path)
 {
 	using namespace document_elements_common;
 
@@ -29,7 +28,7 @@ void TryCheckIsImage(const StdPath& path)
 			throw std::invalid_argument("Given path doesn't represent a file. Check if file exists and its extension. Given path: '" + path.generic_string() + '\'');
 		}
 	}
-	catch (std::invalid_argument&)
+	catch (std::invalid_argument &)
 	{
 		throw;
 	}
@@ -40,7 +39,7 @@ void TryCheckIsImage(const StdPath& path)
 }
 
 template <typename BoundsT>
-void TryCheckAreDimensionsInBounds(size_t width, size_t height, const BoundsT& lowerBound, const BoundsT& upperBound)
+void TryCheckAreDimensionsInBounds(size_t width, size_t height, const BoundsT &lowerBound, const BoundsT &upperBound)
 {
 	if (!IsInBounds(lowerBound, upperBound, width))
 	{
@@ -52,7 +51,7 @@ void TryCheckAreDimensionsInBounds(size_t width, size_t height, const BoundsT& l
 	}
 }
 
-StdPath TryCopyImage(const StdPath& from, const std::optional<StdPath>& to, const std::string& fileName)
+StdPath TryCopyImage(const StdPath &from, const std::optional<StdPath> &to, const std::string &fileName)
 {
 	try
 	{
@@ -75,7 +74,7 @@ StdPath TryCopyImage(const StdPath& from, const std::optional<StdPath>& to, cons
 
 		return imagePath;
 	}
-	catch (std::domain_error&)
+	catch (std::domain_error &)
 	{
 		throw;
 	}
@@ -85,11 +84,8 @@ StdPath TryCopyImage(const StdPath& from, const std::optional<StdPath>& to, cons
 	}
 }
 
-Image::Image(const StdPath& path, size_t width, size_t height)
-	: m_path(path)
-	, m_name(path.has_filename() ? path.filename().generic_string() : "")
-	, m_width(width)
-	, m_height(height)
+Image::Image(const StdPath &path, size_t width, size_t height)
+	: m_path(path), m_name(path.has_filename() ? path.filename().generic_string() : ""), m_width(width), m_height(height)
 {
 	TryCheckIsImage(path);
 
@@ -109,12 +105,12 @@ Image::~Image()
 	}
 }
 
-const StdPath& Image::GetPath() const
+const StdPath &Image::GetPath() const
 {
 	return m_path;
 }
 
-const std::string& Image::GetName() const
+const std::string &Image::GetName() const
 {
 	return m_name;
 }
@@ -136,7 +132,7 @@ void Image::Resize(size_t width, size_t height)
 	m_height = height;
 }
 
-void Image::Save(const StdPath& path) const
+void Image::Save(const StdPath &path) const
 {
 	auto newPath = TryCopyImage(m_path, path, m_name);
 	m_path = newPath;

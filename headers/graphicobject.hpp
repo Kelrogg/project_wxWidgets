@@ -6,7 +6,6 @@ struct GraphicObject
 {
     wxRect2DDouble rect;
     wxColor color;
-    wxString text;
     wxAffineMatrix2D transform;
     // wxRect2DDouble selectedFrame;
 

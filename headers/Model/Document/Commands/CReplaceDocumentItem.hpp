@@ -3,7 +3,7 @@
 
 #include "../../Commands/CompoundEdit.hpp"
 #include "../Elements/DocumentItem.hpp"
-#include "../Elements/Paragraph.hpp"
+/* #include "../Elements/Paragraph.hpp"
 #include "CDeleteDocumentItem.hpp"
 #include "CInsertDocumentItem.hpp"
 #include "common.hpp"
@@ -41,4 +41,5 @@ private:
 	size_t m_index;
 };
 
+ */
 #endif

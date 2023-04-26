@@ -1,26 +1,35 @@
-#ifndef YOUR_PROJECT_NAME_CONTROLLER_HPP
-#define YOUR_PROJECT_NAME_CONTROLLER_HPP
+#ifndef CONTROLLER_HPP
+#define CONTROLLER_HPP
 
-#include "../view/initial/InitialFrame.hpp"
+#include "Controller/IController.hpp"
+#include "Model/Model.hpp"
 
-class Controller
+class Controller : public IController
 {
-protected:
-    wxFrame *frame;
+public:
+    Controller(Model &&model) : m_model(std::forward<Model>(model))
+    {
+    }
 
-    virtual void Create_frame();
+    // virtual bool ToggleView() override;
 
-    virtual void Create_binds();
+    // void Redo() override;
+    // void Undo() override;
+
+    // void DeleteItem() override;
+    // void InsertParagparh() override;
+    // void InsertImage() override;
+    // void ListDocument() override;
+    // void ResizeImage() override;
+    // void ReplaceText() override;
+    // void Save() override;
+    void SetTitle(std::string const &title) override;
 
 private:
-public:
-    Controller();
-
-    Controller(wxFrame *frame);
-
-    ~Controller();
-
-    virtual bool Toggle_view();
+    // wxFrame *frame;
+    Model m_model;
+    // virtual void CreateFrame();
+    // virtual void CreateBinds();
 };
 
-#endif // YOUR_PROJECT_NAME_CONTROLLER_HPP
+#endif

@@ -2,6 +2,7 @@
 #define COMMAND_COMMANDS_ABSTRACT_UNDOABLE_EDIT_HPP
 
 #include "IUndoableEdit.hpp"
+#include "Model/Document/Commands/common.hpp"
 
 class AbstractUndoableEdit : public IUndoableEdit
 {
@@ -17,16 +18,15 @@ public:
 	bool AddEdit(const IUndoableEditSharedPtr &edit) override;
 	bool ReplaceEdit(const IUndoableEditSharedPtr &edit) override;
 
-	const std::string &GetName() const final;
+	CommandName GetName() const final;
 
 	void operator()() final;
 
 protected:
 	AbstractUndoableEdit() = default;
 
-	template <typename EditName = std::string>
-	AbstractUndoableEdit(EditName &&editName)
-		: m_name(std::forward<EditName>(editName)), m_wasExecuted(false)
+	AbstractUndoableEdit(CommandName commandName)
+		: m_wasExecuted(false), m_commandName(commandName)
 	{
 	}
 	~AbstractUndoableEdit();
@@ -39,8 +39,8 @@ protected:
 	void Destroy() override;
 
 private:
-	bool m_wasExecuted = false;
-	const std::string m_name{};
+	bool m_wasExecuted;
+	const CommandName m_commandName{};
 };
 
 #endif

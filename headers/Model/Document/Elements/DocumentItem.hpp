@@ -1,9 +1,9 @@
 #ifndef COMMAND_DOCUMENT_ELEMENTS_DOCUMENT_ITEM_HPP
 #define COMMAND_DOCUMENT_ELEMENTS_DOCUMENT_ITEM_HPP
 
-#include "IImage.hpp"
-#include "IParagraph.hpp"
-#include "Shapes/IShape.hpp"
+#include "Model/Document/Elements/Images/IImage.hpp"
+#include "Model/Document/Elements/Text/IParagraph.hpp"
+#include "Model/Document/Elements/Shapes/IShape.hpp"
 
 class DocumentItem
 {

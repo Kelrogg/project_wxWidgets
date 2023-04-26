@@ -1,30 +1,28 @@
 #include "pch.hpp"
 
-#include "Document/Elements/Shapes/Rectangle.hpp"
+#include "Model/Document/Elements/Shapes/Rectangle.hpp"
 
-const Point& Rectangle::GetLeftTop() const noexcept
+const Point &Rectangle::GetLeftTop() const noexcept
 {
 	return GetBasePoint();
 }
 
-const Point& Rectangle::GetRightBottom() const noexcept
+const Point &Rectangle::GetRightBottom() const noexcept
 {
 	return m_rightBottom;
 }
 
-void Rectangle::Draw(const ICanvasSharedPtr& canvas) const
+void Rectangle::Draw(const ICanvasSharedPtr &canvas) const
 {
-	auto& leftTopP = GetLeftTop();
-	auto& rightBottomP = GetRightBottom();
+	auto &leftTopP = GetLeftTop();
+	auto &rightBottomP = GetRightBottom();
 
-	auto rightTopP = Point{ rightBottomP.x, leftTopP.y };
-	auto leftBottomP = Point{ leftTopP.x, rightBottomP.y };
+	auto centerX = (rightBottomP.x + leftTopP.x) / 2;
+	auto centerY = (rightBottomP.y + leftTopP.y) / 2;
 
-	canvas->SetColor(GetColor());
-	canvas->DrawRegularPolygon({
-		leftTopP,
-		rightTopP,
-		rightBottomP,
-		leftBottomP
-	});
+	auto width = rightBottomP.x - leftTopP.x;
+	auto height = leftTopP.y - rightBottomP.y;
+
+	// canvas->SetColor(GetColor());
+	canvas->DrawRectangle(centerX, centerY, width, height, 0.0);
 }

@@ -1,6 +1,6 @@
 #ifndef COMMAND_DOCUMENT_COMMANDS_CDELETE_DOCUMENT_ITEM_HPP
 #define COMMAND_DOCUMENT_COMMANDS_CDELETE_DOCUMENT_ITEM_HPP
-
+/*
 #include "../../Commands/AbstractUndoableEdit.hpp"
 #include "../Elements/DocumentItem.hpp"
 #include "common.hpp"
@@ -54,4 +54,5 @@ private:
 	DocumentItem m_state;
 };
 
+*/
 #endif

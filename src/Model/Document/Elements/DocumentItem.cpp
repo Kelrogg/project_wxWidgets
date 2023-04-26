@@ -1,6 +1,6 @@
 #include "pch.hpp"
 
-#include "Document/Elements/DocumentItem.hpp"
+#include "Model/Document/Elements/DocumentItem.hpp"
 
 DocumentItem::DocumentItem(const IElementSharedPtr &ptr)
 	: m_element(ptr)

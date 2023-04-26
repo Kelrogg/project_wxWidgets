@@ -1,6 +1,6 @@
 #include "pch.hpp"
 
-#include "Commands/AbstractUndoableEdit.hpp"
+#include "Model/Commands/AbstractUndoableEdit.hpp"
 
 AbstractUndoableEdit::~AbstractUndoableEdit()
 {
@@ -56,17 +56,17 @@ void AbstractUndoableEdit::Destroy()
 {
 }
 
-bool AbstractUndoableEdit::AddEdit(const IUndoableEditSharedPtr& edit)
+bool AbstractUndoableEdit::AddEdit(const IUndoableEditSharedPtr &edit)
 {
 	return false;
 }
 
-bool AbstractUndoableEdit::ReplaceEdit(const IUndoableEditSharedPtr& edit)
+bool AbstractUndoableEdit::ReplaceEdit(const IUndoableEditSharedPtr &edit)
 {
 	return false;
 }
 
-const std::string& AbstractUndoableEdit::GetName() const
+CommandName AbstractUndoableEdit::GetName() const
 {
-	return m_name;
+	return m_commandName;
 }

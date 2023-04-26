@@ -1,6 +1,6 @@
 #include "pch.hpp"
 
-#include "Commands/UndoManager.hpp"
+#include "Model/Commands/UndoManager.hpp"
 
 bool UndoManager::CanUndo() const
 {
@@ -12,7 +12,7 @@ bool UndoManager::CanRedo() const
 	return m_nextEditIndex != m_edits.size();
 }
 
-void UndoManager::AddAndExecuteEdit(const IUndoableEditSharedPtr& edit)
+void UndoManager::AddAndExecuteEdit(const IUndoableEditSharedPtr &edit)
 {
 	if (m_nextEditIndex < m_edits.size())
 	{

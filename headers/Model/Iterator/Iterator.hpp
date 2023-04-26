@@ -5,7 +5,7 @@ template <typename T>
 class IIterator
 {
 public:
-	using reference_type = T&;
+	using reference_type = T &;
 
 	virtual bool HasNext() const = 0;
 	virtual reference_type Get() const = 0;
@@ -26,9 +26,8 @@ public:
 
 	using reference_type = typename MyBase::reference_type;
 
-	IteratorWrapper(const IteratorT& begin, const IteratorT& end)
-		: m_it(begin)
-		, m_end(end)
+	IteratorWrapper(const IteratorT &begin, const IteratorT &end)
+		: m_it(begin), m_end(end)
 	{
 	}
 
@@ -41,7 +40,7 @@ public:
 	{
 		if (m_it == m_end)
 		{
-			throw std::out_of_range("Cannot dereference end iterator");
+			throw std::out_of_range("Can`t dereference end iterator");
 		}
 		return *m_it;
 	}
@@ -50,7 +49,7 @@ public:
 	{
 		if (m_it == m_end)
 		{
-			throw std::out_of_range("Cannot increment end iterator");
+			throw std::out_of_range("Can`t increment end iterator");
 		}
 		++m_it;
 	}

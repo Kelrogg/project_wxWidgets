@@ -1,8 +1,8 @@
 #include "pch.hpp"
 
-#include "Document/Elements/Shapes/RegularPolygon.hpp"
+#include "Model/Document/Elements/Shapes/RegularPolygon.hpp"
 
-const Point& RegularPolygon::GetCenter() const noexcept
+const Point &RegularPolygon::GetCenter() const noexcept
 {
 	return GetBasePoint();
 }
@@ -17,8 +17,8 @@ size_t RegularPolygon::GetVertexCount() const
 	return m_points.size();
 }
 
-void RegularPolygon::Draw(const ICanvasSharedPtr& canvas) const
+void RegularPolygon::Draw(const ICanvasSharedPtr &canvas) const
 {
-	canvas->SetColor(GetColor());
-	canvas->DrawRegularPolygon(m_points);
+	// canvas->SetColor(GetColor());
+	// canvas->DrawRegularPolygon(m_points);
 }
